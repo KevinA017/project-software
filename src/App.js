@@ -1,12 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
-
+import NavBar from './components/NavBar';
 function App() {
   return (
-    <div className="App">
-      <h1> AQUI INICIA EL PROYECTO DE SOFTWARE</h1>
-      
-    </div>
+    <NavBar />
   );
 }
 
