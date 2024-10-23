@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserPlus, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 
 const NavBar = () => {
   // Estado para el menú móvil
@@ -16,8 +19,18 @@ const NavBar = () => {
     setIsUserMenuOpen(!isUserMenuOpen);
   };
 
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  const handleDashboardClick = () => {
+    navigate('/'); // Esto navegará a la ruta raíz donde está Shop_1
+  };
+
   return (
-    <nav className="bg-gray-800 fixed top-0 left-0 w-full">
+    <nav className="bg-gray-800">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -76,6 +89,7 @@ const NavBar = () => {
                   href="#"
                   className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
                   aria-current="page"
+                  onClick={handleDashboardClick}
                 >
                   Dashboard
                 </a>
@@ -95,7 +109,7 @@ const NavBar = () => {
                   href="#"
                   className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                 >
-                  Categorias
+                  Calendar
                 </a>
               </div>
             </div>
@@ -125,33 +139,23 @@ const NavBar = () => {
               </svg>
             </button>
 
-            {/* Menú de usuario */}
-            <div className="relative ml-3">
-              <button
-                type="button"
-                onClick={toggleUserMenu} // Llama a la función de menú de usuario
-                className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                id="user-menu-button"
-                aria-expanded={isUserMenuOpen} // Cambia este valor según el estado
-                aria-haspopup="true"
-              >
-                <span className="absolute -inset-1.5"></span>
-                <span className="sr-only">Open user menu</span>
-                <img
-                  className="h-8 w-8 rounded-full"
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt=""
-                />
-              </button>
+              {/* Iconos login  y logout */}
 
-              {/* Menú de usuario desplegable */}
-              {isUserMenuOpen && (
-                <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabIndex="-1">
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex="-1" id="user-menu-item-0">Your Profile</a>
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex="-1" id="user-menu-item-1">Settings</a>
-                  <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabIndex="-1" id="user-menu-item-2">Sign out</a>
-                </div>
-              )}
+              <div className="flex items-center space-x-4">
+              <button
+                className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                onClick={() => navigate('/signup')}
+              >
+                <FontAwesomeIcon icon={faUserPlus} className="mr-2" />
+                Sign Up
+              </button>
+              <button
+                className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                onClick={handleLoginClick}
+              >
+                <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
+                Login
+              </button>
             </div>
           </div>
         </div>

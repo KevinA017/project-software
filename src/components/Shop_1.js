@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import ShopMenu from "../ShopMenu";
 
   
 const Shop_1 = () => {
@@ -10,7 +10,7 @@ const Shop_1 = () => {
       description: 'Explicacion',
       imageSrc: 'https://tailwindui.com/plus/img/ecommerce-images/home-page-02-edition-01.jpg',
       imageAlt: 'Desk with leather desk pad, walnut desk organizer, wireless keyboard and mouse, and porcelain mug.',
-      href: '#',
+      href: "../ShopMenu",
     },
     {
       name: 'Categoria 2',
