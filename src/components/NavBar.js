@@ -91,7 +91,7 @@ const NavBar = () => {
                   aria-current="page"
                   onClick={handleDashboardClick}
                 >
-                  Dashboard
+                  Inicio
                 </a>
                 <a
                   href="#"
@@ -103,13 +103,13 @@ const NavBar = () => {
                   href="#"
                   className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                 >
-                  Projects
+                  Productos
                 </a>
                 <a
                   href="#"
                   className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                 >
-                  Calendar
+                  Categorias
                 </a>
               </div>
             </div>
