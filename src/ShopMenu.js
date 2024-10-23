@@ -1,33 +1,41 @@
-
+import React, { useState, useEffect } from 'react';
+import { supabase } from "./supabaseClient";
 
 function ShopMenu() {
-    const products = [
-        {
-        }
-      ]
-    return(
-        
-        <div className="bg-white">
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 className="sr-only">Products</h2>
+    const [product, setProduct] = useState(null); // Estado para almacenar el producto
+  const [loading, setLoading] = useState(true); // Estado para controlar la carga
 
-        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {products.map((product) => (
-            <a key={product.id} href={product.href} className="group">
-              <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                <img
-                  alt={product.imageAlt}
-                  src={product.imageSrc}
-                  className="h-full w-full object-cover object-center group-hover:opacity-75"
-                />
-              </div>
-              <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-              <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p>
-            </a>
-          ))}
-        </div>
-      </div>
-    </div>
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const { data, error } = await supabase
+        .from('Productos') // Nombre de la tabla
+        .select('*') // Obtener todos los campos
+        .limit(1) // Limitar a un solo resultado
+        .single(); // Obtener un solo objeto en lugar de un array
+
+      if (error) {
+        console.error('Error al cargar el producto:', error);
+      } else {
+        setProduct(data); // Almacenar el producto en el estado
+      }
+      setLoading(false); // Cambiar el estado de carga
+    };
+
+    fetchProduct(); // Llamar a la función de carga de producto
+  }, []); // Solo se ejecuta una vez al montar el componente
+
+  if (loading) {
+    return <p>Cargando...</p>; // Mensaje de carga
+  }
+
+  // Comprobar si el producto existe
+  if (!product) {
+    return <p>No hay productos disponibles.</p>;
+  }
+
+    return(
+        <p>{product.Name}</p>
+       
         
     );
 }
