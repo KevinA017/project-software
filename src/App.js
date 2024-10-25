@@ -13,6 +13,7 @@ function App() {
     <Router>
       <div>
         <NavBar />
+        <Shop_1 />
         <Routes>
           <Route path="/" element={<Shop_1 />} />
           <Route path="/login" element={<Login />} />
