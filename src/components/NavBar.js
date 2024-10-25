@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
-import logo from '../LOGO4.png'; 
+import logo from '../SOLO_LOGO.png'; 
 
 
 const NavBar = () => {
@@ -85,9 +85,9 @@ const NavBar = () => {
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center">
               <img
-                className="h-12 w-auto"
+                className="h-9 w-auto"
                 src={logo}
-                alt="Your Company"
+                alt="Quantify"
               />
             </div>
             <div className="hidden sm:ml-6 sm:block">
