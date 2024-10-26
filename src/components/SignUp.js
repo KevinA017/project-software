@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import logo from '../LOGO4.png'; 
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
@@ -39,8 +40,13 @@ const SignUp = () => {
             }}
         >
             <div className="max-w-md w-full space-y-8 p-8 bg-white bg-opacity-90 rounded-xl shadow-2xl backdrop-blur-sm">
-                <div>
-                    <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                <div className="text-center">
+                    <img 
+                        src={logo}
+                        alt="Imagen de encabezado"
+                        className="w-auto h-20 mb-auto mx-auto"
+                    />
+                    <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
                         Crear una cuenta
                     </h2>
                 </div>
@@ -85,14 +91,14 @@ const SignUp = () => {
                                 onChange={handleChange}
                             />
                         </div>
-                 <div>
+                        <div>
                             <label htmlFor="confirmPassword" className="sr-only">Confirmar contraseña</label>
                             <input
                                 id="confirmPassword"
                                 name="confirmPassword"
                                 type="password"
                                 required
-                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z -10 sm:text-sm"
                                 placeholder="Confirmar contraseña"
                                 value={formData.confirmPassword}
                                 onChange={handleChange}

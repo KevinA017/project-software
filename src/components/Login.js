@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import logo from '../LOGO4.png'; 
 
 const Login =  () => {
     const  [username, setUsername] = useState("");
@@ -24,8 +25,13 @@ const Login =  () => {
             }}
         >
             <div className="max-w-md w-full space-y-8 p-8 bg-white bg-opacity-85 backdrop-blur-sm rounded-xl shadow-2xl">
-                <div>
-                    <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                <div className="text-center">
+                    <img 
+                        src={logo} 
+                        alt="Logo"
+                        className="w-auto h-20 mb-auto mx-auto" 
+                    />
+                    <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
                         Iniciar Sesión
                     </h2>
                 </div>
