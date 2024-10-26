@@ -4,36 +4,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 import logo from '../SOLO_LOGO.png'; 
 
-
 const NavBar = () => {
   // Estado para el menú móvil
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  // Estado para el menú de usuario
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  // Estado para la opción activa
+  const [activeTab, setActiveTab] = useState('home');
 
   // Función para alternar el menú móvil
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  // Función para alternar el menú de usuario
-  const toggleUserMenu = () => {
-    setIsUserMenuOpen(!isUserMenuOpen);
-  };
-
   const navigate = useNavigate();
 
-  const handleLoginClick = () => {
-    navigate('/login');
-  };
-
-  const handleSignUpClick = () => {
-    navigate('/signup'); 
-  };
-
-
-  const handleDashboardClick = () => {
-    navigate('/');
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    navigate(tab === 'home' ? '/' : `/${tab}`);
   };
 
   return (
@@ -44,15 +30,15 @@ const NavBar = () => {
             {/* Botón de menú móvil */}
             <button
               type="button"
-              onClick={toggleMobileMenu} // Llama a la función de menú móvil
+              onClick={toggleMobileMenu}
               className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
               aria-controls="mobile-menu"
-              aria-expanded={isMobileMenuOpen} // Cambia este valor según el estado
+              aria-expanded={isMobileMenuOpen}
             >
               <span className="absolute -inset-0.5"></span>
               <span className="sr-only">Open main menu</span>
               <svg
-                className={`h-6 w-6 ${isMobileMenuOpen ? 'hidden' : 'block'}`} // Mostrar/ocultar según el estado
+                className={`h-6 w-6 ${isMobileMenuOpen ? 'hidden' : 'block'}`}
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
@@ -66,7 +52,7 @@ const NavBar = () => {
                 />
               </svg>
               <svg
-                className={`h-6 w-6 ${isMobileMenuOpen ? 'block' : 'hidden'}`} // Mostrar/ocultar según el estado
+                className={`h-6 w-6 ${isMobileMenuOpen ? 'block' : 'hidden'}`}
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
@@ -92,32 +78,42 @@ const NavBar = () => {
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
-                <a
-                  href="#"
-                  className="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
-                  aria-current="page"
-                  onClick={handleDashboardClick}
+                {/* Opción de Inicio */}
+                <button
+                  onClick={() => handleTabClick('home')}
+                  className={`rounded-md px-3 py-2 text-sm font-medium ${
+                    activeTab === 'home' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                  }`}
                 >
                   Inicio
-                </a>
-                <a
-                  href="#"
-                  className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                </button>
+                {/* Opción de Dashboard */}
+                <button
+                  onClick={() => handleTabClick('dashboard')}
+                  className={`rounded-md px-3 py-2 text-sm font-medium ${
+                    activeTab === 'dashboard' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                  }`}
                 >
                   Dashboard
-                </a>
-                <a
-                  href="#"
-                  className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                </button>
+                {/* Opción de Projects */}
+                <button
+                  onClick={() => handleTabClick('projects')}
+                  className={`rounded-md px-3 py-2 text-sm font-medium ${
+                    activeTab === 'projects' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                  }`}
                 >
                   Projects
-                </a>
-                <a
-                  href="#"
-                  className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                </button>
+                {/* Opción de Calendar */}
+                <button
+                  onClick={() => handleTabClick('calendar')}
+                  className={`rounded-md px-3 py-2 text-sm font-medium ${
+                    activeTab === 'calendar' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                  }`}
                 >
                   Calendar
-                </a>
+                </button>
               </div>
             </div>
           </div>
@@ -146,20 +142,18 @@ const NavBar = () => {
               </svg>
             </button>
 
-              {/* Iconos login  y logout */}
-
-              <div className="flex items-center space-x-4">
+            {/* Iconos login y logout */}
+            <div className="flex items-center space-x-4">
               <button
                 className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                onClick={handleSignUpClick}
-                
+                onClick={() => navigate('/signup')}
               >
                 <FontAwesomeIcon icon={faUserPlus} className="mr-2" />
                 Sign Up
               </button>
               <button
                 className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                onClick={handleLoginClick}
+                onClick={() => navigate('/login')}
               >
                 <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
                 Login
@@ -173,10 +167,10 @@ const NavBar = () => {
       {isMobileMenuOpen && (
         <div className="sm:hidden" id="mobile-menu">
           <div className="space-y-1 px-2 pb-3 pt-2">
-            <a href="#" className="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</a>
-            <a href="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Team</a>
-            <a href="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Projects</a>
-            <a href="#" className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Calendar</a>
+            <button onClick={() => handleTabClick('dashboard')} className="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white" aria-current="page">Dashboard</button>
+            <button onClick={() => handleTabClick('team')} className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Team</button>
+            <button onClick={() => handleTabClick('projects')} className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Projects</button>
+            <button onClick={() => handleTabClick('calendar')} className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Calendar</button>
           </div>
         </div>
       )}

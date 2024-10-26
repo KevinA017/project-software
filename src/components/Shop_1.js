@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ShopMenu from "../ShopMenu";
+import { Link } from "react-router-dom";
 
   
 const Shop_1 = () => {
@@ -10,7 +10,7 @@ const Shop_1 = () => {
       description: 'Explicacion',
       imageSrc: 'https://images.pexels.com/photos/6694543/pexels-photo-6694543.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
       imageAlt: 'Dinero y una calculadora.',
-      href: "../ShopMenu",
+      href: "/expense",
     },
     {
       name: 'Planes',
