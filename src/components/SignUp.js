@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import logo from '../LOGO4.png'; 
+import { supabase } from "../supabaseClient";
 
 const SignUp = () => {
     const [formData, setFormData] = useState({
-        username: "",
+        name: "",
         email: "",
         password: "",
         confirmPassword: ""
@@ -18,18 +19,54 @@ const SignUp = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setMessage("");
+
+        // Validación de contraseñas
         if (formData.password !== formData.confirmPassword) {
             setMessage("Las contraseñas no coinciden");
             return;
         }
+
         if (formData.password.length < 6) {
             setMessage("La contraseña debe tener al menos 6 caracteres");
             return;
         }
 
-        setMessage("Registro exitoso!");
+        try {
+            // Registro en Supabase (sistema de autenticación)
+            const { data: authData, error: authError } = await supabase.auth.signUp({
+                email: formData.email,
+                password: formData.password
+            });
+
+            if (authError) {
+                setMessage(`Error de registro: ${authError.message}`);
+                return;
+            }
+
+            // Generar un ID único de tipo INT para la tabla Usuarios
+            const generatedId = Math.floor(Math.random() * 1000000); // ID aleatorio único
+
+            // Guardar información adicional en la tabla "Usuarios"
+            const { user } = authData;
+            const { data: userData, error: userError } = await supabase.from("Usuarios").insert([{
+                id: generatedId, // ID INT generado
+                name: formData.name,
+                email: formData.email
+            }]);
+
+            if (userError) {
+                setMessage(`Error al guardar datos del usuario: ${userError.message}`);
+                return;
+            }
+
+            setMessage("Registro exitoso. Verifica tu correo para confirmar tu cuenta.");
+        } catch (error) {
+            console.error("Error en el registro:", error);
+            setMessage("Ocurrió un error inesperado. Inténtalo nuevamente.");
+        }
     };
 
     return (
@@ -53,15 +90,15 @@ const SignUp = () => {
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                     <div className="rounded-md shadow-sm -space-y-px">
                         <div>
-                            <label htmlFor="username" className="sr-only">Usuario</label>
+                            <label htmlFor="name" className="sr-only">Usuario</label>
                             <input
-                                id="username"
-                                name="username"
+                                id="name"
+                                name="name"
                                 type="text"
                                 required
                                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                 placeholder="Usuario"
-                                value={formData.username}
+                                value={formData.name}
                                 onChange={handleChange}
                             />
                         </div>

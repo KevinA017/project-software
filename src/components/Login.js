@@ -1,17 +1,37 @@
 import React, { useState } from "react";
-import logo from '../LOGO4.png'; 
+import logo from '../LOGO4.png';
+import { supabase } from "../supabaseClient";
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 
-const Login =  () => {
-    const  [username, setUsername] = useState("");
-    const  [password, setPassword] = useState("");
-    const  [message, setMessage] = useState("");
+const Login = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
+    const navigate = useNavigate(); // Crea una instancia de navigate
 
-    const handleSubmit = (e)  => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (username === "admin" && password === "123") {
+        setMessage("");
+
+        try {
+            // Intentar iniciar sesión en Supabase
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            });
+
+            if (error) {
+                setMessage("Error al iniciar sesión: " + error.message);
+                return;
+            }
+
+            // Si el inicio de sesión es exitoso, redirige a la página de inicio
             setMessage("Inicio sesión exitoso!");
-        } else {
-            setMessage("Usuario o constraseña incorrectos");
+            navigate('/home');  // Redirige a la página de inicio (ajusta la ruta a tu caso)
+
+        } catch (error) {
+            console.error("Error al iniciar sesión:", error);
+            setMessage("Ocurrió un error inesperado. Inténtalo nuevamente.");
         }
     };
 
@@ -39,16 +59,16 @@ const Login =  () => {
                     <input type="hidden" name="remember" value="true" />
                     <div className="rounded-md shadow-sm -space-y-px">
                         <div>
-                            <label htmlFor="username" className="sr-only">Usuario</label>
+                            <label htmlFor="email" className="sr-only">Correo</label>
                             <input
-                                id="username"
-                                name="username"
-                                type="text"
+                                id="email"
+                                name="email"
+                                type="email"
                                 required
                                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="Usuario"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                placeholder="Correo"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
                         <div>
