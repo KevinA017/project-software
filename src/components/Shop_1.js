@@ -1,32 +1,40 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
+import React from "react";
+import { useNavigate } from "react-router-dom";  // Importar useNavigate
   
 const Shop_1 = () => {
+
+  const navigate = useNavigate();  // Inicializar el hook de navegación
 
   const callouts = [
     {
       name: 'Ahorros',
-      description: 'Explicacion',
+      description: 'Explicación',
       imageSrc: 'https://images.pexels.com/photos/6694543/pexels-photo-6694543.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
       imageAlt: 'Dinero y una calculadora.',
-      href: "/expense",
+      href: "expense", // Este es el destino de la navegación
     },
     {
       name: 'Planes',
-      description: 'Explicacion',
+      description: 'Explicación',
       imageSrc: 'https://images.pexels.com/photos/7698735/pexels-photo-7698735.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
       imageAlt: 'Hombre explicando un plan.',
-      href: '#',
+      href: '#', // Aquí aún no hay ruta, puedes añadirla más tarde
     },
     {
       name: 'Inversiones',
-      description: 'Explicacion',
+      description: 'Explicación',
       imageSrc: 'https://images.pexels.com/photos/187041/pexels-photo-187041.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
       imageAlt: 'Ipad con stocks.',
-      href: '#',
+      href: '#', // Aquí también puedes definir la ruta
     },
-  ]
+  ];
+
+  // Función para manejar el click y la navegación
+  const handleClick = (href) => {
+    if (href !== '#') { // Verifica que la ruta no sea un valor vacío
+      navigate(href);
+    }
+  };
 
   return (
     <div className="bg-gray-100">
@@ -46,10 +54,13 @@ const Shop_1 = () => {
                 </div>
                 <div className="mt-4 p-4 bg-white rounded-lg shadow-md">
                   <h3 className="text-sm text-gray-500">
-                    <a href={callout.href}>
-                      <span className="absolute inset-0" />
+                    {/* Usamos onClick en lugar de href */}
+                    <button
+                      onClick={() => handleClick(callout.href)} // Llama a la función handleClick con la ruta
+                      className="absolute inset-0 w-full h-full cursor-pointer"
+                    >
                       {callout.name}
-                    </a>
+                    </button>
                   </h3>
                   <p className="text-base font-semibold text-gray-900">{callout.description}</p>
                 </div>
@@ -59,7 +70,7 @@ const Shop_1 = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Shop_1;
