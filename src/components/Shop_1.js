@@ -5,11 +5,6 @@ const Shop_1 = () => {
 
   const navigate = useNavigate();  // Inicializar el hook de navegación
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-    navigate(tab === 'home' ? '/' : `/${tab}`);
-  };
-  
   // Función para navegar a "Ahorros"
   const goToAhorros = () => {
     navigate("/expense");
@@ -17,32 +12,32 @@ const Shop_1 = () => {
 
   // Función para navegar a "Planes"
   const goToPlanes = () => {
-    navigate("/plans");
+    navigate("/dashboard");
   };
 
   // Función para navegar a "Inversiones"
   const goToInversiones = () => {
-    navigate("/investments");
+    navigate("/calendar");
   };
 
   const callouts = [
     {
-      name: 'Ahorros',
-      description: 'Explicación',
+      name: 'Expense',
+      description: 'Add expenses',
       imageSrc: 'https://images.pexels.com/photos/6694543/pexels-photo-6694543.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
       imageAlt: 'Dinero y una calculadora.',
       onClick: goToAhorros, // Función para manejar el click de "Ahorros"
     },
     {
-      name: 'Planes',
-      description: 'Explicación',
+      name: 'Dashboard',
+      description: 'Your information',
       imageSrc: 'https://images.pexels.com/photos/7698735/pexels-photo-7698735.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
       imageAlt: 'Hombre explicando un plan.',
       onClick: goToPlanes, // Función para manejar el click de "Planes"
     },
     {
-      name: 'Inversiones',
-      description: 'Explicación',
+      name: 'Calendar',
+      description: 'Expenses per month',
       imageSrc: 'https://images.pexels.com/photos/187041/pexels-photo-187041.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
       imageAlt: 'Ipad con stocks.',
       onClick: goToInversiones, // Función para manejar el click de "Inversiones"
