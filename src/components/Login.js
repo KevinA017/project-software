@@ -27,7 +27,7 @@ const Login = () => {
 
             // Si el inicio de sesión es exitoso, redirige a la página de inicio
             setMessage("Inicio sesión exitoso!");
-            navigate('/home');  // Redirige a la página de inicio (ajusta la ruta a tu caso)
+            navigate('/');  // Redirige a la página de inicio (ajusta la ruta a tu caso)
 
         } catch (error) {
             console.error("Error al iniciar sesión:", error);
