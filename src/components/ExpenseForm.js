@@ -1,11 +1,25 @@
 import React, { useState } from 'react';
+import { supabase } from '../supabaseClient';
 
 const ExpenseForm = () => {
   // Estado para manejar múltiples gastos
   const [expenses, setExpenses] = useState([
     { amount: '', category: '', subcategory: '', paymentMethod: '', date: '', description: '', comments: '' }
   ]);
-
+  const getUserDatabaseId = async (email) => {
+    const { data, error } = await supabase
+      .from('Usuarios')
+      .select('id') // Seleccionar la columna id (INT)
+      .eq('email', email) // Buscar el registro usando el correo del usuario
+      .single();
+  
+    if (error) {
+      console.error('Error fetching user ID:', error.message);
+      throw error;
+    }
+  
+    return data?.id;
+  };
   // Subcategorías dinámicas
   const subcategoriesOptions = {
     Food: ['Groceries', 'Dining Out', 'Snacks'],
@@ -35,11 +49,53 @@ const ExpenseForm = () => {
   };
 
   // Enviar todos los gastos
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(expenses); // Aquí enviarías los datos al servidor o procesarlos.
-    // Resetear formulario
-    setExpenses([{ amount: '', category: '', subcategory: '', paymentMethod: '', date: '', description: '', comments: '' }]);
+  
+    try {
+      // Obtén el usuario autenticado
+      const { data: authData, error: authError } = await supabase.auth.getUser();
+      if (authError) throw authError;
+  
+      const authUser = authData.user;
+  
+      if (!authUser) {
+        alert('User not authenticated');
+        return;
+      }
+  
+      // Obtén el ID del usuario en la base de datos
+      const userId = await getUserDatabaseId(authUser.email);
+  
+      if (!userId) {
+        alert('Failed to fetch user ID');
+        return;
+      }
+  
+      // Agregar el ID del usuario a cada gasto
+      const expensesWithUserId = expenses.map((expense) => ({
+        ...expense,
+        user_id: userId, // Agregar el ID entero del usuario
+      }));
+  
+      // Insertar los gastos en la tabla 'Gastos'
+      const { data, error } = await supabase
+        .from('Gastos') // Asegúrate de que 'Gastos' tenga una columna llamada 'user_id'
+        .insert(expensesWithUserId);
+  
+      if (error) throw error;
+  
+      console.log('Gastos guardados:', data);
+      alert('Expenses saved successfully!');
+  
+      // Resetear el formulario
+      setExpenses([
+        { amount: '', category: '', subcategory: '', paymentMethod: '', date: '', description: '', comments: '' },
+      ]);
+    } catch (error) {
+      console.error('Error al guardar los gastos:', error.message);
+      alert('Failed to save expenses. Please try again.');
+    }
   };
 
   return (

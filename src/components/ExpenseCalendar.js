@@ -1,23 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import { startOfMonth, endOfMonth, eachDayOfInterval, format, isSameDay } from 'date-fns';
+import { supabase } from '../supabaseClient';  // Asegúrate de importar tu cliente de Supabase
+import { useAuth } from '../AuthContext';
 
-const ExpenseCalendar = ({ expenses = []  }) => {
+const ExpenseCalendar = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [daysInMonth, setDaysInMonth] = useState([]);
   const [monthlyTotal, setMonthlyTotal] = useState(0); // Estado para el total del mes
+  const [expenses, setExpenses] = useState([]); // Estado para los gastos
   const [selectedDay, setSelectedDay] = useState(null); 
   const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [userName, setUserName] = useState(null); 
+  const { user } = useAuth();
 
+  const getUserDatabaseId = async (email) => {
+    const { data, error } = await supabase
+      .from('Usuarios')
+      .select('id') // Seleccionar la columna id (INT)
+      .eq('email', email) // Buscar el registro usando el correo del usuario
+      .single();
+  
+    if (error) {
+      console.error('Error fetching user ID:', error.message);
+      throw error;
+    }
+  
+    return data?.id;
+  };
+  // Obtener los gastos de la base de datos
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      // Obtén el usuario autenticado
+      const { data: authData, error: authError } = await supabase.auth.getUser();
+      if (authError) throw authError;
+  
+      const authUser = authData.user;
+  
+      if (!authUser) {
+          alert('User not authenticated');
+          return;
+      }
+  
+      // Obtén el ID del usuario en la base de datos
+      const userId = await getUserDatabaseId(authUser.email);
+  
+      if (!userId) {
+          alert('Failed to fetch user ID');
+          return;
+      }
+      const { data, error } = await supabase
+        .from('Gastos')
+        .select('date, description, amount, category')
+        .eq('user_id', userId);
 
-   // Agregar un gasto de ejemplo si expenses está vacío
-   const Ejexpenses = expenses.length === 0 ? [
-    {
-      date: '2024-11-15',
-      description: 'Compra de supermercado',
-      amount: 50,
-      category: 'Comida',
-    },
-  ] : expenses;
+      if (error) {
+        console.error('Error fetching expenses:', error);
+      } else {
+        setExpenses(data || []);
+      }
+    };
+
+    fetchExpenses();
+  }, []);
 
   useEffect(() => {
     const firstDayOfMonth = startOfMonth(currentMonth);
@@ -26,7 +70,7 @@ const ExpenseCalendar = ({ expenses = []  }) => {
     setDaysInMonth(days);
     
     // Calcular el total de gastos del mes actual
-    const total = Ejexpenses
+    const total = expenses
       .filter(expense => new Date(expense.date).getMonth() === currentMonth.getMonth())
       .reduce((sum, expense) => sum + expense.amount, 0);
     setMonthlyTotal(total); // Actualizar el total mensual
@@ -41,7 +85,7 @@ const ExpenseCalendar = ({ expenses = []  }) => {
   };
 
   const getExpensesForDay = (day) => {
-    return expenses ? Ejexpenses.filter(expense => isSameDay(new Date(expense.date), day)) : [];
+    return expenses.filter(expense => isSameDay(new Date(expense.date), day));
   };
 
   const openModal = (day) => {
@@ -87,7 +131,7 @@ const ExpenseCalendar = ({ expenses = []  }) => {
             <div className="mt-1 sm:mt-2 space-y-1">
               {getExpensesForDay(day).map((expense, idx) => (
                 <div key={idx} className="text-[10px] sm:text-xs text-gray-500">
-                  {expense.description}: ${expense.amount}
+                  {expense.category}: ${expense.amount}
                 </div>
               ))}
               {getExpensesForDay(day).length === 0 && (
@@ -109,7 +153,7 @@ const ExpenseCalendar = ({ expenses = []  }) => {
               {getExpensesForDay(selectedDay).length > 0 ? (
                 getExpensesForDay(selectedDay).map((expense, idx) => (
                   <div key={idx} className="flex justify-between items-center">
-                    <p className="text-gray-700">{expense.description}</p>
+                    <p className="text-gray-700">{expense.category}</p>
                     <p className="text-green-500 font-semibold">${expense.amount}</p>
                   </div>
                 ))
