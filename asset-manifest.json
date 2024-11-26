@@ -1,19 +1,20 @@
 {
   "files": {
     "main.css": "/project-software/static/css/main.21dc192a.css",
-    "main.js": "/project-software/static/js/main.84ad6c38.js",
+    "main.js": "/project-software/static/js/main.a8d5518d.js",
     "static/js/952.79fb2d66.chunk.js": "/project-software/static/js/952.79fb2d66.chunk.js",
     "static/js/453.3b96d840.chunk.js": "/project-software/static/js/453.3b96d840.chunk.js",
     "static/media/SOLO_LOGO.png": "/project-software/static/media/SOLO_LOGO.0beff62678e88df14129.png",
     "static/media/LOGO4.png": "/project-software/static/media/LOGO4.0fb93e839956d484e297.png",
+    "static/media/logo.svg": "/project-software/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/project-software/index.html",
     "main.21dc192a.css.map": "/project-software/static/css/main.21dc192a.css.map",
-    "main.84ad6c38.js.map": "/project-software/static/js/main.84ad6c38.js.map",
+    "main.a8d5518d.js.map": "/project-software/static/js/main.a8d5518d.js.map",
     "952.79fb2d66.chunk.js.map": "/project-software/static/js/952.79fb2d66.chunk.js.map",
     "453.3b96d840.chunk.js.map": "/project-software/static/js/453.3b96d840.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.21dc192a.css",
-    "static/js/main.84ad6c38.js"
+    "static/js/main.a8d5518d.js"
   ]
 }
