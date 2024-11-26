@@ -9,10 +9,10 @@ const Shop_1 = () => {
     setActiveTab(tab);
     navigate(tab === 'home' ? '/' : `/${tab}`);
   };
-
+  
   // Función para navegar a "Ahorros"
   const goToAhorros = () => {
-    handleTabClick("expense")
+    navigate("/expense");
   };
 
   // Función para navegar a "Planes"
